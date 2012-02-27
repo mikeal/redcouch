@@ -2,12 +2,16 @@
   "author": "Mikeal Rogers <mikeal.rogers@gmail.com> (http://www.mikealrogers.com)",
   "name": "redcouch",
   "description": "A client that stores data in both CouchDB and Redis.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/mikeal/redcouch.git"
   },
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "couch": "*",
+    "redis": "*",
+    "underscore": "*"
+  },
   "devDependencies": {}
 }
