@@ -1,0 +1,71 @@
+# redcouch -- A client that stores data in both CouchDB and Redis.
+
+## Install
+
+<pre>
+  npm install redcouch
+</pre>
+
+Or from source:
+
+<pre>
+  git clone git://github.com/mikeal/redcouch.git 
+  cd redcouch
+  npm link
+</pre>
+
+## Usage
+
+```javascript
+var redcouch = require('redcouch')
+  , red = redcouch('http://localhost:5984/shortened')
+  ;
+  
+red.set('key', 'value', function (e) {
+  if (e) throw e
+  red.get('key', function (e, value) {
+    if (e) throw e
+    console.error(value) // "value"
+    red.close()
+  })
+})
+```
+
+## redcouch(couchurl,[redisoptions])
+
+By default redcouch will connect to a localhost Redis on the default port.
+
+Available Redis options are: `host`, `port`, and `select`. The `select` option will insure that redcouch uses the specified numeric DB.
+
+## red.prime([clobber], cb)
+
+Fills the Redis database with all the key/value pairs from the Couch database.
+
+```
+var redcouch = require('redcouch')
+  , red = redcouch('http://localhost:5984/shortened')
+  ;
+red.prime(function (e) {
+  if (e) throw e
+  console.log('finished')
+  red.close()
+})
+```
+
+Clobber will remove all Redis keys that are not in the Couch database.
+
+## red.close()
+
+Must be called in order to shutdown the redis connections as they are persistent.
+
+## red.ensureWrite = false
+
+Defaults to false. When set to false set callbacks will be resolved after the key is stored in Redis, if set to true they will not be resolved until they are set in Couch.
+
+## red.redis
+
+Redis client, uses @mranney's wonderful node-redis library.
+
+## red.couch
+
+Couch client, uses @mikeal's couch library.
