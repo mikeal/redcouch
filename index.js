@@ -50,7 +50,7 @@ KeyValueStore.prototype.prime = function (clobber, cb) {
         var toRemove = _.difference(redkeys, couchkeys)
         counter++
         self.redis.mset(
-          _.flatten(results.rows.map(function (r) {return [r.key, JSON.stringify(r.value.value)]}))
+          _.flatten(results.rows.map(function (r) {return [r.key, JSON.stringify(r.doc.value)]}))
           , function (err, res) {
             if (err) return cb(err)
             counter = counter - 1
@@ -72,7 +72,7 @@ KeyValueStore.prototype.prime = function (clobber, cb) {
       var couchkeys = results.rows.map(function (r) {return r.key})
       
       self.redis.mset(
-        _.flatten(results.rows.map(function (r) {return [r.key, JSON.stringify(r.value.value)]}))
+        _.flatten(results.rows.map(function (r) {return [r.key, JSON.stringify(r.doc.value)]}))
         , function (err, res) {
           if (err) return cb(err)
           cb(null)
